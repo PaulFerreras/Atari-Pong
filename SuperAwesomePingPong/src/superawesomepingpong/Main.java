@@ -1,6 +1,5 @@
 package superawesomepingpong;
 
-import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
@@ -15,14 +14,16 @@ public class Main {
 		 * (EDT). This is to prevent deadlock and
 		 * random bugs from occuring.
 		 */
-		SwingUtilities.invokeLater(new Runnable() {
-
-			@Override
-			public void run() {
-				createGUI();
-				
-			}
-		});
+//		SwingUtilities.invokeLater(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				createGUI();
+//				
+//			}
+//		});
+		
+		createGUI();
 	}
 	
 	//PF: Create GUI on Event Dispatch Thread
@@ -33,17 +34,42 @@ public class Main {
 		main_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		main_frame.setLocation(150, 50);
 		
+		//Game Dimensions (screen)
+		int screen_width = 1000;
+		int screen_height = 600;
+		
 		//Model, View, Controller
-		Model model = new Model(main_frame);
-		View view = new View(model);
+		Model model = new Model(screen_width, screen_height);
+		View view = new View(model, screen_width, screen_height);
 		Controller controller = new Controller(model, view);
 		
-		view.setPreferredSize(new Dimension(1000, 600));
-		view.setBackground(Color.BLACK);
-		
+		main_frame.setResizable(false);
 		main_frame.setContentPane(view);
 		main_frame.pack();
 		main_frame.setVisible(true);
+		
+		runGame(model, view, controller);
+	}
+	
+	private static void runGame(Model model, View view, Controller controller) {
+		//Game Loop
+		boolean is_running = true;
+		long start_time = System.nanoTime();
+		
+		//Locked at 60 frames per second
+		double frames_per_sec = 60;
+		
+		while(is_running) {
+			double elapsed_time = (System.nanoTime() - start_time) / 1000000000.0;
+			
+			if(elapsed_time >= (1/frames_per_sec)) {
+				model.update();
+				view.repaint();
+				
+				start_time = System.nanoTime();
+			}
+			
+		}
 	}
 	
 }
