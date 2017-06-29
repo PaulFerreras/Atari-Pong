@@ -7,11 +7,11 @@ import java.awt.geom.Ellipse2D;
 
 public class Ball implements SpriteInterface {
 
-	private int  radius = 8,                  //Radius set to 8
+	private int radius = 8,                  //Radius set to 8
 				screen_width,
 				screen_height;
 	public double x, y, angle, vx, vy;
-	private static int SPEED = 10;             //Speed set to 10
+	private static int SPEED = 8;             //Speed set to 8
 	private Color color = Color.WHITE;        //Color set to white
 	
 	public Ball(int screen_width, int screen_height) {
@@ -46,6 +46,47 @@ public class Ball implements SpriteInterface {
 		}
 	}
 	
+	public void getNewAngleRight() {
+		getNewAngle();
+		
+		double angle_degrees = Math.toDegrees(angle);
+		
+		if(angle_degrees >= 90 && angle_degrees <= 270) {
+			getNewAngleRight();
+		}
+	}
+	
+	public void getNewAngleLeft() {
+		getNewAngle();
+		
+		double angle_degrees = Math.toDegrees(angle);
+		
+		if(angle_degrees >= 0 && angle_degrees <= 90 ||
+				angle_degrees >= 270 && angle_degrees <= 360) {
+			getNewAngleLeft();
+		}
+	}
+	
+	@Override
+	public double getTop() {
+		return y - radius;
+	}
+	
+	@Override
+	public double getBottom() {
+		return y + radius;
+	}
+	
+	@Override
+	public double getLeft() {
+		return x - radius;
+	}
+	
+	@Override
+	public double getRight() {
+		return x + radius;
+	}
+	
 	@Override
 	public void move() {
 		x += vx;
@@ -63,27 +104,56 @@ public class Ball implements SpriteInterface {
 		g2.fill(getShape());
 	}
 	
-	public double getTop() {
-		return y - radius;
-	}
-	
-	public double getBottom() {
-		return y + radius;
-	}
-	
-	public double getLeft() {
-		return x - radius;
-	}
-	
-	public double getRight() {
-		return x + radius;
-	}
-	
-	public void reset() {
-		this.x = screen_width/2;
-		this.y = screen_height/2;
+	public void stop() {
+		x = screen_width/2;
+		y = screen_height/2;
 		
-		getNewAngle();
+		vx = 0;
+		vy = 0;
+	}
+	
+	public void reset(Player p) {
+		x = screen_width/2;
+		y = screen_height/2;
+		
+		SPEED = 8;
+		
+		if (p != null) {
+			switch(p.getID()) {
+			case "Player1": getNewAngleLeft(); break;
+			case "Player2": getNewAngleRight(); break;
+			}
+		} else {
+			getNewAngle();
+		}
+	}
+	
+	public void increaseSpeed() {
+		SPEED++;
+		
+		if(vx < 0) {
+			vx = Math.abs(SPEED * Math.cos(angle)) * -1.0;
+		} else {
+			vx = Math.abs(SPEED * Math.cos(angle));
+		}
+		
+		
+		if(vy < 0) {
+			vy = Math.abs(SPEED * Math.sin(angle)) * -1.0;
+		} else {
+			vy = Math.abs(SPEED * Math.sin(angle));
+		}
+		
+	}
+
+	@Override
+	public double getVX() {
+		return vx;
+	}
+
+	@Override
+	public double getVY() {
+		return vy;
 	}
 
 }

@@ -26,8 +26,6 @@ public class Controller implements KeyListener{
 		case KeyEvent.VK_S: player1.down_pressed = true; break;
 		case KeyEvent.VK_UP: player2.up_pressed = true; break;
 		case KeyEvent.VK_DOWN: player2.down_pressed = true; break;
-		case KeyEvent.VK_R: model.reset(); break;
-		case KeyEvent.VK_CONTROL: view.debug_mode = !view.debug_mode; break;
 		}
 		
 	}
@@ -39,6 +37,23 @@ public class Controller implements KeyListener{
 		case KeyEvent.VK_S: player1.down_pressed = false; break;
 		case KeyEvent.VK_UP: player2.up_pressed = false; break;
 		case KeyEvent.VK_DOWN: player2.down_pressed = false; break;
+		case KeyEvent.VK_SPACE: model.start = true; view.start = true; break;
+		case KeyEvent.VK_P:
+			if (model.start) {
+				model.paused = !model.paused; view.paused = !view.paused; 		//Pauses Game
+			}
+			break;                   
+		case KeyEvent.VK_R: if(model.start && !model.paused) model.reset(); break;							//Resets Players and Ball
+		}
+		
+		//Turns on debug mode
+		if(e.isControlDown()) {
+			if(e.getKeyCode() == KeyEvent.VK_D) {
+				view.ball_info = !view.ball_info;								//Turns on Ball Info
+			} else if (e.getKeyCode() == KeyEvent.VK_C) {
+				player1.corners_visible = !player1.corners_visible;
+				player2.corners_visible = !player2.corners_visible;
+			}
 		}
 		
 	}
