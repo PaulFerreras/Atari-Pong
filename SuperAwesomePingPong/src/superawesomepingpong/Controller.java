@@ -18,25 +18,32 @@ public class Controller implements KeyListener{
 		
 		view.addKeyListener(this);
 	}
+	
+	private void updatePlayers() {
+		player1.update();
+		player2.update();
+	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
-		case KeyEvent.VK_W: player1.up_pressed = true; break;
-		case KeyEvent.VK_S: player1.down_pressed = true; break;
-		case KeyEvent.VK_UP: player2.up_pressed = true; break;
-		case KeyEvent.VK_DOWN: player2.down_pressed = true; break;
+		case KeyEvent.VK_W: player1.pressedUp(); break;
+		case KeyEvent.VK_S: player1.pressedDown(); break;
+		case KeyEvent.VK_UP: player2.pressedUp(); break;
+		case KeyEvent.VK_DOWN: player2.pressedDown(); break;
 		}
 		
+		player1.update();
+		player2.update();
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		switch (e.getKeyCode()) {
-		case KeyEvent.VK_W: player1.up_pressed = false; break;
-		case KeyEvent.VK_S: player1.down_pressed = false; break;
-		case KeyEvent.VK_UP: player2.up_pressed = false; break;
-		case KeyEvent.VK_DOWN: player2.down_pressed = false; break;
+		case KeyEvent.VK_W: player1.releasedUp(); break;
+		case KeyEvent.VK_S: player1.releasedDown(); break;
+		case KeyEvent.VK_UP: player2.releasedUp(); break;
+		case KeyEvent.VK_DOWN: player2.releasedDown(); break;
 		case KeyEvent.VK_SPACE: model.start = true; view.start = true; break;
 		case KeyEvent.VK_P:
 			if (model.start) {
@@ -55,6 +62,9 @@ public class Controller implements KeyListener{
 				player2.corners_visible = !player2.corners_visible;
 			}
 		}
+		
+		player1.update();
+		player2.update();
 		
 	}
 

@@ -66,7 +66,7 @@ public class View extends JPanel {
 		//Draw hints
 		g2.setColor(Color.WHITE);
 		g2.setFont(new Font("Agency FB Bold", Font.BOLD, 25));
-		g2.drawString("'R' = Restart     'P' = Pause", screen_width - 300, 30);
+		g2.drawString("'R' = Restart     'P' = Pause", screen_width - 350, 30);
 		
 		player1.drawSprite(g2);
 		player2.drawSprite(g2);

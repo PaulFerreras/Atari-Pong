@@ -61,20 +61,8 @@ public class Player implements SpriteInterface{
 	
 	@Override
 	public void move() {
-		//If both up and down are pressed, won't move
-		if(!(up_pressed && down_pressed)) {
-			if(up_pressed) {
-				y -= SPEED;
-			} else if(down_pressed) {
-				y += SPEED;
-			}
-		}
+		y += vy;
 	}
-	
-//	@Override
-//	public void move() {
-//		y += vy;
-//	}
 	
 	public Shape getTopLeftCorner() {
 		return new Rectangle2D.Double(getLeft(), getTop(), corner_width, corner_height);
@@ -146,18 +134,42 @@ public class Player implements SpriteInterface{
 	}
 	
 	public void pressedUp() {
-		vy = -SPEED;
-	}
-	
-	public void pressedDown() {
-		vy = SPEED;
+		up_pressed = true;
 	}
 	
 	public void releasedUp() {
-		vy = 0.0;
+		up_pressed = false;
+	}
+	
+	public void pressedDown() {
+		down_pressed = true;
 	}
 	
 	public void releasedDown() {
-		vy = 0.0;
+		down_pressed = false;
 	}
+	
+	public void update() {
+		if(up_pressed && down_pressed) {
+			vy = 0.0;
+		} else if(up_pressed) {
+			vy = -SPEED;
+		} else if(down_pressed) {
+			vy = SPEED;
+		} else {
+			vy = 0.0;
+		}
+	}
+	
+//	@Override
+//	public void move() {
+//		//If both up and down are pressed, won't move
+//		if(!(up_pressed && down_pressed)) {
+//			if(up_pressed) {
+//				y -= SPEED;
+//			} else if(down_pressed) {
+//				y += SPEED;
+//			}
+//		}
+//	}
 }

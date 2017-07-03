@@ -44,7 +44,7 @@ public class Model {
 		});
 		timer.setRepeats(false);
 		
-		sounds = new Sounds();
+//		sounds = new Sounds();
 	}
 	
 	public Player getPlayer1() {
@@ -62,26 +62,25 @@ public class Model {
 	public void update() {
 		if(start) {
 			if(!paused) {
-				movePlayers();
-
-				//Ball bounces on top and bottom of screen
-//				if(ball.vy < 0 && ball.getTop() < 0 || 
-//						ball.vy > 0 && ball.getBottom() > screen_height) {
-//					ball.vy *= -1.0;
-//				}
+				
+				//Move Players
+				for(Player p : players) {
+					if (!checkTopAndBottomBoundaries(p)) {
+						p.move();
+					}
+				}
 				
 				if(checkTopAndBottomBoundaries(ball)) {
 					ball.vy *= -1.0;
-					sounds.wallBounce();
+					//sounds.wallBounce();
 				}
 				
 				checkPlayersAndBallCollision();
 
+				//Check if either player scored
 				if(ball.getLeft() > screen_width) {
 					scorePlayer(player1);             //Player 1 Scores
-				}
-
-				if(ball.getRight() < 0) {
+				} else if(ball.getRight() < 0) {
 					scorePlayer(player2);             //Player 2 Scores
 				}
 
@@ -90,29 +89,15 @@ public class Model {
 		}
 	}
 	
-	//Moves Player 1 & 2
-	private void movePlayers() {
-		for(Player p : players) {
-			if (checkPlayerBoundaries(p)) {
-				p.move();
-			}
-		}
-	}
-	
-	//Player 1 & 2 checks top and bottom of screen
-	private boolean checkPlayerBoundaries(Player p) {
-		return p.up_pressed && p.getTop() > 0 || p.down_pressed && p.getBottom() < screen_height;
-	}
-	
 	private boolean checkTopAndBottomBoundaries(SpriteInterface s) {
-		return s.getVY() < 0.0 && s.getTop() < 0 || s.getVY() > 0.0 && s.getBottom() > screen_height;
+		return s.getVY() < 0.0 && s.getTop() <= 0 || s.getVY() > 0.0 && s.getBottom() >= screen_height;
 	}
 	
 	private void checkPlayersAndBallCollision() {
 		for(Player p : players) {
 			if(checkCollisionWithBall(p.getShape())) {
 				
-				sounds.playerBounce();
+				//sounds.playerBounce();
 				
 				collision_counter++;
 				
@@ -143,7 +128,7 @@ public class Model {
 	}
 	
 	public void scorePlayer(Player p) {
-		sounds.score();
+//		sounds.score();
 		
 		p.scored();
 		
@@ -158,5 +143,15 @@ public class Model {
 		ball.stop();
 		timer.start();
 	}
+	
+	//Player 1 & 2 checks top and bottom of screen
+//	private boolean checkPlayerBoundaries(Player p) {
+//		return p.up_pressed && p.getTop() > 0 || p.down_pressed && p.getBottom() < screen_height;
+//	}
+	
+//	//Moves Player 1 & 2
+//	private void movePlayers() {
+//
+//	}
 	
 }
