@@ -5,63 +5,62 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
-import javax.swing.JFrame;
-
-public class Player implements SpriteInterface{
+public class Player extends Sprite{
 	
-	private String id;
-	//Location X and Y
-	private int x, y,
-				width = 20, height = 100,                   //Width and Height are Set to 20, 100
-				corner_width = 5, corner_height = 5,
-				start_x, start_y,
+	private String name;
+	private int width = 20, height = 100,                   //Width and Height are Set to 20, 100
+				corner_width = 5, corner_height = 5,        //Corners set to 5, 5
 				score;
-	private double vx, vy;
 	private static int SPEED = 10;                          //Players speed set to 10
-	public boolean up_pressed, down_pressed, 				//Public variables, Controller calls on them
+	private boolean up_pressed, down_pressed, 				//Public variables, Controller calls on them
 				   corners_visible = false;                
-	private Color color = Color.WHITE;                      //Color set to white
+	private Color player_color = Color.WHITE,               //Player color set to white
+				  corner_color = Color.BLUE;                //Corner color set to blue
+	private Sprite.SpriteView player_view;
 	
-	public Player(String id, int start_x, int start_y) {
-		this.id = id;
+	public Player(String name, int x, int y) {
+		this.name = name;
 		
-		this.start_x = start_x;
-		this.start_y = start_y;
+		setX(x);
+		setY(y);
 		
-		x = start_x;
-		y = start_y;
+		setWidth(width);
+		setHeight(height);
 		
-		vx = 0.0;
-		vy = 0.0;
-	}
-	
-	public String getID() {
-		return id;
+		setColor(player_color);
 	}
 	
 	@Override
-	public double getTop() {
-		return y - (height/2);
+	public Shape getShape() {
+		return new Rectangle2D.Double(getLeft(), getTop(), width, height);
 	}
 	
+	//Uses Anonymous Class
+	//To allow overriding of method without needing to subclass
 	@Override
-	public double getBottom() {
-		return y + (height/2);
+	public Sprite.SpriteView getSpriteView() {
+		if(player_view == null) player_view = new SpriteView(this) {
+			
+			//Override drawSprite method to draw corners
+			@Override
+			public void drawSprite(Graphics2D g2) {
+				super.drawSprite(g2);
+				
+				if(corners_visible) {
+					g2.setColor(corner_color);
+					g2.fill(getTopLeftCorner());
+					g2.fill(getTopRightCorner());
+					g2.fill(getBottomLeftCorner());
+					g2.fill(getBottomRightCorner());
+				}
+			}
+		};
+		
+		return player_view;
 	}
 	
-	@Override
-	public double getLeft() {
-		return x - (width/2);
-	}
-	
-	@Override
-	public double getRight() {
-		return x + (width/2);
-	}
-	
-	@Override
-	public void move() {
-		y += vy;
+	public String getName() {
+		return name;
 	}
 	
 	public Shape getTopLeftCorner() {
@@ -80,57 +79,8 @@ public class Player implements SpriteInterface{
 		return new Rectangle2D.Double(getRight() - 5, getBottom() - corner_height, corner_width, corner_height);
 	}
 	
-	public Shape[] getCorners() {
-		Shape[] corners = {
-			getTopLeftCorner(),
-			getTopRightCorner(),
-			getBottomLeftCorner(),
-			getBottomRightCorner(),
-		};
-		
-		return corners;
-	}
-	
-	@Override
-	public Shape getShape() {
-		return new Rectangle2D.Double(getLeft(), getTop(), width, height);
-	}
-	
-	@Override
-	public void drawSprite(Graphics2D g2) {
-		g2.setColor(color);
-		g2.fill(getShape());
-
-		if(corners_visible) {
-			g2.setColor(Color.BLUE);
-			g2.fill(getTopLeftCorner());
-			g2.fill(getTopRightCorner());
-			g2.fill(getBottomLeftCorner());
-			g2.fill(getBottomRightCorner());
-		}
-	}
-	
-	public void scored() {
-		score += 1;
-	}
-	
-	public int getScore() {
-		return score;
-	}
-	
-	public void reset() {
-		x = start_x;
-		y = start_y;
-	}
-
-	@Override
-	public double getVX() {
-		return vx;
-	}
-
-	@Override
-	public double getVY() {
-		return vy;
+	public void pressedCornersVisible() {
+		corners_visible = !corners_visible;
 	}
 	
 	public void pressedUp() {
@@ -150,26 +100,23 @@ public class Player implements SpriteInterface{
 	}
 	
 	public void update() {
-		if(up_pressed && down_pressed) {
-			vy = 0.0;
+		//If both up and down are pressed, will not move
+		//If both up and down are not pressed, will not move
+		if(up_pressed == down_pressed) {
+			setVY(0.0);                                     //Do nothing
 		} else if(up_pressed) {
-			vy = -SPEED;
-		} else if(down_pressed) {
-			vy = SPEED;
+			setVY(-SPEED);                                  //Move up
 		} else {
-			vy = 0.0;
+			setVY(SPEED);                                   //Move down
 		}
 	}
 	
-//	@Override
-//	public void move() {
-//		//If both up and down are pressed, won't move
-//		if(!(up_pressed && down_pressed)) {
-//			if(up_pressed) {
-//				y -= SPEED;
-//			} else if(down_pressed) {
-//				y += SPEED;
-//			}
-//		}
-//	}
+	public void scored() {
+		score += 1;
+	}
+	
+	public int getScore() {
+		return score;
+	}
+	
 }

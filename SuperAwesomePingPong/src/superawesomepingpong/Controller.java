@@ -18,11 +18,6 @@ public class Controller implements KeyListener{
 		
 		view.addKeyListener(this);
 	}
-	
-	private void updatePlayers() {
-		player1.update();
-		player2.update();
-	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -33,8 +28,7 @@ public class Controller implements KeyListener{
 		case KeyEvent.VK_DOWN: player2.pressedDown(); break;
 		}
 		
-		player1.update();
-		player2.update();
+		updatePlayers();
 	}
 
 	@Override
@@ -44,27 +38,22 @@ public class Controller implements KeyListener{
 		case KeyEvent.VK_S: player1.releasedDown(); break;
 		case KeyEvent.VK_UP: player2.releasedUp(); break;
 		case KeyEvent.VK_DOWN: player2.releasedDown(); break;
-		case KeyEvent.VK_SPACE: model.start = true; view.start = true; break;
-		case KeyEvent.VK_P:
-			if (model.start) {
-				model.paused = !model.paused; view.paused = !view.paused; 		//Pauses Game
-			}
-			break;                   
-		case KeyEvent.VK_R: if(model.start && !model.paused) model.reset(); break;							//Resets Players and Ball
+		case KeyEvent.VK_SPACE: model.pressedStart(); break;
+		case KeyEvent.VK_P: if (model.isStarted()) model.pressedPause(); break;   		          //Pauses Game                
+		case KeyEvent.VK_R: if(model.isStarted() && !model.isPaused()) model.reset(); break;	  //Resets Players and Ball
 		}
 		
-		//Turns on debug mode
+		//Debug mode
 		if(e.isControlDown()) {
 			if(e.getKeyCode() == KeyEvent.VK_D) {
-				view.ball_info = !view.ball_info;								//Turns on Ball Info
+				view.pressedBallInfo();								                  //Turns on Ball Info
 			} else if (e.getKeyCode() == KeyEvent.VK_C) {
-				player1.corners_visible = !player1.corners_visible;
-				player2.corners_visible = !player2.corners_visible;
+				player1.pressedCornersVisible();                                                  //Turns
+				player2.pressedCornersVisible();                                                  //Corners Visible
 			}
 		}
 		
-		player1.update();
-		player2.update();
+		updatePlayers();
 		
 	}
 
@@ -73,4 +62,8 @@ public class Controller implements KeyListener{
 		
 	}
 	
+	private void updatePlayers() {
+		player1.update();
+		player2.update();
+	}
 }

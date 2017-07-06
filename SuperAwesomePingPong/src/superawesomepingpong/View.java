@@ -8,7 +8,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
+import javax.swing.Action;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
 public class View extends JPanel {
 
@@ -16,9 +18,9 @@ public class View extends JPanel {
 	private int screen_width, screen_height;
 	private Player player1, player2;
 	private Ball ball;
-	public boolean ball_info,
-				   start = false, 
-				   paused = false;
+	private Sprite.SpriteView player1_view, player2_view,
+					   ball_view;
+	private boolean ball_info= false;
 	
 	public View(Model m, int screen_width, int screen_height) {
 		setPreferredSize(new Dimension(screen_width, screen_height));
@@ -33,6 +35,10 @@ public class View extends JPanel {
 		player2 = model.getPlayer2();
 		
 		ball = model.getBall();
+		
+		player1_view = player1.getSpriteView();
+		player2_view = player2.getSpriteView();
+		ball_view = ball.getSpriteView();
 		
 		setFocusable(true);
 	}
@@ -68,35 +74,45 @@ public class View extends JPanel {
 		g2.setFont(new Font("Agency FB Bold", Font.BOLD, 25));
 		g2.drawString("'R' = Restart     'P' = Pause", screen_width - 350, 30);
 		
-		player1.drawSprite(g2);
-		player2.drawSprite(g2);
+		player1_view.drawSprite(g2);
+		player2_view.drawSprite(g2);
 		
-		if(model.start) {
-			ball.drawSprite(g2);
-		}
-		
-		if(ball_info) {
-			g2.setColor(Color.RED);
-			g2.drawString("Ball Angle: " + Math.toDegrees(ball.angle), 0, 30);
-			g2.drawString("Ball Vx: " + ball.vx, 0, 60);
-			g2.drawString("Ball Vy: " + ball.vy, 0, 90);
-			g2.drawString("Ball x:  " + ball.x, 0, 120);
-			g2.drawString("Ball y:  " + ball.y, 0, 150);
-		}
-		
-		if(!model.start) {
+		if(model.isStarted()) {
+			ball_view.drawSprite(g2);
+		} else {
 			g2.setColor(Color.WHITE);
 			g2.setFont(new Font("Arial Black", Font.PLAIN, 40));
 			g2.drawString("Press 'SPACE' to begin", (screen_width/2) - 250, (screen_height/2) + 20);
 		}
 		
-		if(paused) {
+		if(ball_info) {
+			g2.setColor(Color.RED);
+			g2.drawString("Ball Angle: " + Math.toDegrees(ball.angle), 0, 30);
+			g2.drawString("Ball Vx: " + ball.getVX(), 0, 60);
+			g2.drawString("Ball Vy: " + ball.getVY(), 0, 90);
+			g2.drawString("Ball x:  " + ball.getX(), 0, 120);
+			g2.drawString("Ball y:  " + ball.getY(), 0, 150);
+		}
+		
+		if(model.isPaused()) {
 			g2.setColor(Color.WHITE);
 			g2.setFont(new Font("Arial Black", Font.PLAIN, 100));
 			g2.drawString("Game Paused", (screen_width/8), (screen_height/2));
 			g2.setFont(new Font("Arial Black", Font.PLAIN, 20));
 			g2.drawString("(Press 'P' to unpause)", (3*screen_width)/8, screen_height/2 + 50);
 		}
+	}
+	
+	public void pressedBallInfo() {
+		ball_info = !ball_info;
+	}
+	
+	public void putInput(String keyStrokeName, Object actionMapKey) {
+		getInputMap().put(KeyStroke.getKeyStroke(keyStrokeName), actionMapKey);
+	}
+	
+	public void putAction(Object key, Action action) {
+		getActionMap().put(key, action);
 	}
 	
 }

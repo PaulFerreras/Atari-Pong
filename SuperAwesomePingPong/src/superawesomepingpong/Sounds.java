@@ -21,7 +21,7 @@ public class Sounds {
 		
 		//Player Bounce
 		try {
-			sound_file = new FileInputStream("C:/Users/Paul/Desktop/Workspace/SuperAwesomePingPong/Sounds/player bounce.wav");
+			sound_file = new FileInputStream("D:/Users/pferr/Desktop/Workspace/SuperAwesomePingPong/Sounds/player bounce.wav");
 			buffered_input_stream = new BufferedInputStream(sound_file);
 			audio_input_stream = AudioSystem.getAudioInputStream(buffered_input_stream);
 			player_bounce_clip = AudioSystem.getClip();
@@ -33,7 +33,7 @@ public class Sounds {
 		
 		//Wall Bounce
 		try {
-			sound_file = new FileInputStream("C:/Users/Paul/Desktop/Workspace/SuperAwesomePingPong/Sounds/wall bounce.wav");
+			sound_file = new FileInputStream("D:/Users/pferr/Desktop/Workspace/SuperAwesomePingPong/Sounds/wall bounce.wav");
 			buffered_input_stream = new BufferedInputStream(sound_file);
 			audio_input_stream = AudioSystem.getAudioInputStream(buffered_input_stream);
 			wall_bounce_clip = AudioSystem.getClip();
@@ -45,7 +45,7 @@ public class Sounds {
 		
 		//Score
 		try {
-			sound_file = new FileInputStream("C:/Users/Paul/Desktop/Workspace/SuperAwesomePingPong/Sounds/score.wav");
+			sound_file = new FileInputStream("D:/Users/pferr/Desktop/Workspace/SuperAwesomePingPong/Sounds/score.wav");
 			buffered_input_stream = new BufferedInputStream(sound_file);
 			audio_input_stream = AudioSystem.getAudioInputStream(buffered_input_stream);
 			score_clip = AudioSystem.getClip();
