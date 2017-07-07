@@ -1,4 +1,4 @@
-package superawesomepingpong;
+package ataripong;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

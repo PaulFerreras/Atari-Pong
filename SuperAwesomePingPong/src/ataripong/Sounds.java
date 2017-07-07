@@ -1,4 +1,4 @@
-package superawesomepingpong;
+package ataripong;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;

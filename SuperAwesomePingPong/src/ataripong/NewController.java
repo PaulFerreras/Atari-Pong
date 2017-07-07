@@ -1,4 +1,4 @@
-package superawesomepingpong;
+package ataripong;
 
 import java.awt.event.ActionEvent;
 
