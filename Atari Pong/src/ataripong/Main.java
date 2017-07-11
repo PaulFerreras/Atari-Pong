@@ -26,8 +26,6 @@ public class Main {
 	
 	//PF: Create GUI on Event Dispatch Thread
 	private static void createGUI() {
-		System.out.println(javax.swing.SwingUtilities.isEventDispatchThread());
-		
 		//JFrame
 		JFrame main_frame = new JFrame();
 		main_frame.setTitle("SuperAwesomePingPong");

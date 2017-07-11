@@ -43,7 +43,7 @@ public class Model {
 		});
 		timer.setRepeats(false);
 		
-		sounds = new Sounds();
+//		sounds = new Sounds();
 	}
 	
 	public Player getPlayer1() {
@@ -93,7 +93,7 @@ public class Model {
 					//Check ball collisions
 					if(checkTopAndBottomBoundaries(ball)) {
 						ball.setVY(ball.getVY() * -1.0);                                            //Ball bounces off top or bottom boundaries
-						sounds.wallBounce();
+//						sounds.wallBounce();
 					}
 					checkPlayersAndBallCollision();                                 //Ball bounces off players
 					
@@ -114,7 +114,7 @@ public class Model {
 		for(Player p : players) {
 			if(checkCollisionWithBall(p.getShape())) {
 				
-				sounds.playerBounce();
+//				sounds.playerBounce();
 				collision_counter++;
 				if(collision_counter%3 == 0) ball.increaseSpeed();
 				
@@ -143,7 +143,7 @@ public class Model {
 	}
 	
 	private void scorePlayer(Player p) {
-		sounds.score();
+//		sounds.score();
 		
 		p.scored();
 		
