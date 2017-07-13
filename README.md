@@ -1,2 +1,2 @@
 # Atari Pong
-One of the oldest sports arcade video games.
+A java version of one of the oldest sports arcade video games.
