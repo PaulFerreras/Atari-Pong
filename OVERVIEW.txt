@@ -1,6 +1,6 @@
 Atari Pong  7/13/2017
 
-What I've Implemented So Far:
+What I've implemented so far:
 - Players & Ball
 - Ball Physics
 - Stage (Dashed line down middle)
