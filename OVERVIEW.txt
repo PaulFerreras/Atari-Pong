@@ -1,17 +1,17 @@
 Atari Pong  7/13/2017
 
 What I've Implemented So Far:
-Players & Ball
-Ball Physics
-Stage (Dashed line down middle)
-Score Info
-Pause Button
-Restart Button
-Corner Physics
-Debug Mode - ball info, corners
+- Players & Ball
+- Ball Physics
+- Stage (Dashed line down middle)
+- Score Info
+- Pause Button
+- Restart Button
+- Corner Physics
+- Debug Mode - ball info, corners
 
 What I still need to implement:
-More Accurate Corner Physics
-Sounds
-Fix Game Loop
-Place GUI on EDT
+- More Accurate Corner Physics
+- Sounds
+- Fix Game Loop
+- Place GUI on EDT
